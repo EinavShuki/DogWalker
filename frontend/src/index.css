@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fdfcfa;
+  color: black;
+}
+main {
+  height: 80vh;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 1rem 0;
+}
+h4 {
+  margin: 1rem;
+}
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+/*Header*/
+#header_nav {
+  display: flex;
+  font-size: 1.3rem;
+  color: #fdfcfa;
+  padding: 1rem;
+  width: 100%;
+  background-color: rgba(0, 114, 207, 0.712);
+  border-bottom: 2px solid black;
+}
+#header_nav a {
+  position: relative;
+  left: 90%;
+}
+
+/*Footer*/
+#footer {
+  display: block;
+  position: relative;
+  text-align: center;
+}
+
+/*enter screen*/
+.container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 2.5rem;
+  margin-right: 5rem;
+}
+.welcome_div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 4rem;
+}
+
+.pic_div img {
+  position: relative;
+  width: 19rem;
+  height: 30rem;
+}
+.paws {
+  position: absolute;
+  font-size: 3rem;
+  color: rgba(242, 133, 0, 0.158);
+  align-self: center;
+  transform: rotate(35deg);
+  left: 60%;
+  top: 50%;
+  z-index: -1;
+}
+.one {
+  animation: fadeIn ease 8s infinite;
+  -webkit-animation: fadeIn ease 8s infinite;
+  animation-delay: 2s;
+  position: relative;
+  transform: scale(3);
+  bottom: 1rem;
+}
+.two {
+  animation: fadeIn ease 8s infinite;
+  -webkit-animation: fadeIn ease 8s infinite;
+  animation-delay: 3s;
+  position: relative;
+  margin: 1rem;
+  bottom: 1rem;
+  left: 7rem;
+}
+.three {
+  animation: fadeIn ease 8s infinite;
+  -webkit-animation: fadeIn ease 8s infinite;
+  animation-delay: 4s;
+  position: relative;
+  transform: scale(2);
+  margin: 1rem;
+  bottom: 7rem;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.sign_in_div {
+  display: grid;
+  row-gap: 2rem;
+}
+.sign_in_div button {
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 1rem 5rem;
+  color: #fdfcfa;
+  border: 2px solid black;
+  background-color: rgba(0, 114, 207, 0.712);
+}
