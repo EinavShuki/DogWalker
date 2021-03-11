@@ -1,12 +1,18 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import SignUp from "../components/SignUp/SignUp";
 import dogpic from "../img/dog.png";
 
 const EnterScreen = () => {
   const [signUp, setSignUp] = useState(false);
+  const history = useHistory();
   const signUpHandler = () => {
     setSignUp(true);
   };
+  const loginHandler = () => {
+    history.push("/login");
+  };
+
   return (
     <div className="container">
       <div className="welcome_div">
@@ -30,8 +36,8 @@ const EnterScreen = () => {
         <SignUp />
       ) : (
         <div className="sign_in_div">
-          <button onClick={signUpHandler}>Log in</button>
-          <button>Sign up</button>
+          <button onClick={loginHandler}>Log in</button>
+          <button onClick={signUpHandler}>Sign up</button>
         </div>
       )}
     </div>

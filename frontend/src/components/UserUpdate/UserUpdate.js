@@ -1,66 +1,73 @@
 import React, { useRef, useState } from "react";
-import "./SignUp.css";
+import "./UserUpdate.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
-const SignUp = () => {
+const UserUpdate = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { updatePassword, updateEmail, currentUser } = useAuth();
   const history = useHistory();
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      console.log("Passwords do not match");
-      setError("Passwords do not match");
-    } else {
-      try {
-        setLoading(true);
-        setError("");
-        await signup(emailRef.current.value, passwordRef.current.value);
-        history.push("/profile");
-      } catch (err) {
-        setError(err.message);
-      }
+      return setError("Passwords do not match");
     }
-    setLoading(false);
+
+    const promises = [];
+    setLoading(true);
+    setError("");
+    if (emailRef.current.value !== currentUser.email) {
+      promises.push(updateEmail(emailRef.current.value));
+    }
+    if (passwordRef.current.value) {
+      promises.push(updatePassword(passwordRef.current.value));
+    }
+
+    Promise.all(promises)
+      .then(() => history.push("/"))
+      .catch(() => {
+        setError("Failed to update account");
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
-    <div className="sign_up_div_box">
-      <h2 className="sign_up_tit">Sign Up</h2>
+    <div className="update_div_box">
+      <h2 className="update_tit">Update</h2>
       <form onSubmit={submitHandler} className="signup_form">
         <input
+          defaultValue={currentUser.email}
           autoComplete="on"
           ref={emailRef}
           type="email"
           placeholder="Enter Email"
         />
         <input
-          required={true}
           autoComplete="on"
           ref={passwordRef}
           type="password"
-          placeholder="Enter password"
+          placeholder="Live blank to keep current password"
         />
         <input
-          required={true}
           autoComplete="on"
           ref={passwordConfirmRef}
           type="password"
-          placeholder="Confirm password"
+          placeholder="Live blank to keep current password"
         />
         <small>{error}</small>
         <button disabled={loading} type="submit">
-          Sign Up
+          Update
         </button>
       </form>
+      <Link to="/">Cancel</Link>
     </div>
   );
 };
 
-export default SignUp;
+export default UserUpdate;

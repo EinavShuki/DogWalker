@@ -1,9 +1,9 @@
-.sign_up_div_box {
+.update_div_box {
   border-radius: 6px;
   border: 1px solid rgba(242, 133, 0, 0.397);
   padding: 2rem 1rem;
 }
-.sign_up_tit {
+.update_tit {
   text-align: center;
   margin-bottom: 1.5rem;
 }

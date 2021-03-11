@@ -1,0 +1,50 @@
+.profie_div {
+  margin: auto;
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid rgba(242, 133, 0, 0.397);
+  padding: 1rem;
+  width: 50rem;
+  height: 25rem;
+  top: 2rem;
+}
+.img_profile {
+  cursor: pointer;
+  position: relative;
+  width: fit-content;
+  padding: 1.3rem;
+  margin: auto;
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  border-radius: 30px;
+  border: 1px solid black;
+}
+.profile_form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  row-gap: 2rem;
+}
+.profile_form span,
+.profile_form label {
+  margin: 0 0.5rem;
+}
+
+.profile_form textarea {
+  resize: none;
+}
+
+#age {
+  width: 3.5rem;
+}
+
+.profile_form button {
+  display: block;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  width: fit-content;
+  margin: auto;
+  border: 2px solid black;
+  background-color: rgba(0, 144, 0, 0.705);
+}
