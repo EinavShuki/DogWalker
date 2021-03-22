@@ -1,75 +1,214 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./UserDetails.css";
 import axios from "axios";
+import { useStorage } from "../../contexts/StorageContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { useDb } from "../../contexts/DbContext";
+
 const UserDetails = () => {
   const [cities, setCities] = useState([]);
-  // const [citySelected, setCitySelected] = useState(false);
+  const [countries, setCountries] = useState([]);
+  const [gender, setGender] = useState();
+  const [wikiDataId, setWikiDataId] = useState();
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [ImgUrl, setImgUrl] = useState("");
+  const [lat, setLat] = useState("");
+  const [lan, setLan] = useState("");
 
-  const nameRef = useRef();
+  const { uploadToStorage, getFromStorage } = useStorage();
+  const { updateProfile } = useAuth();
+  const { uploadToDb, getFromDb } = useDb();
+
   const ageRef = useRef();
-  const genderRef = useRef();
-  const locationRef = useRef();
-  const PhoneRef = useRef();
+  const countryRef = useRef();
+  const cityRef = useRef();
+  const nameRef = useRef();
   const aboutRef = useRef();
+  const phoneRef = useRef();
 
-  const clickHandler = async () => {
-    if (locationRef.current.value.length > 2)
-      try {
-        const config = {
-          headers: { "Content-Type": "application/json" },
-        };
-        const { data } = await axios.get(
-          `https://data.gov.il/api/3/action/datastore_search?q=${locationRef.current.value}&resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab`,
-          config
-        );
-        console.log(data.result.records);
-        setCities(data.result.records);
-      } catch (err) {
-        console.log(err);
-      }
+  const { currentUser } = useAuth();
+
+  const locateUser = () => {
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      console.log("coords", coords);
+      if (coords.latitude > 0) setLat("+" + coords.latitude);
+      else setLat("-" + coords.latitude);
+      if (coords.longitude > 0) setLan("+" + coords.longitude);
+      else setLan("-" + coords.longitude);
+    });
   };
+
+  useEffect(() => {
+    if (lan !== "") {
+      const options = {
+        method: "GET",
+        url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
+        params: { location: `${lat}${lan}` },
+        headers: {
+          "x-rapidapi-key":
+            "1bcc8b1472mshc6f6ec1fc9d0725p1aafe6jsnfa31c60995ec",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+        },
+      };
+      const setLoacation = async () => {
+        try {
+          const { data } = await axios(options);
+          cityRef.current.value = data.data[0].city;
+          countryRef.current.value = data.data[0].country;
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      setLoacation();
+    }
+  }, [lan]);
+
+  const countrySearch = async () => {
+    setCountries([]);
+    const options = {
+      method: "GET",
+      url: "https://wft-geo-db.p.rapidapi.com/v1/geo/countries",
+      params: { limit: "10", namePrefix: countryRef.current.value },
+      headers: {
+        "x-rapidapi-key": "1bcc8b1472mshc6f6ec1fc9d0725p1aafe6jsnfa31c60995ec",
+        "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+      },
+    };
+
+    try {
+      const { data } = await axios(options);
+      setCountries(data.data);
+      if (data.data.length === 1) {
+        setWikiDataId(data.data[0].wikiDataId);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const citySearch = async () => {
+    setCities([]);
+    if (cityRef.current.value.length > 2) {
+      const options = {
+        method: "GET",
+        url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
+        params: {
+          limit: "10",
+          countryIds: wikiDataId,
+          namePrefix: cityRef.current.value,
+        },
+        headers: {
+          "x-rapidapi-key":
+            "1bcc8b1472mshc6f6ec1fc9d0725p1aafe6jsnfa31c60995ec",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+        },
+      };
+
+      try {
+        const { data } = await axios(options);
+        setCities(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    const promises = [];
+    //update name and image to current user
+    promises.push(updateProfile(nameRef.current.value, ImgUrl));
+    //update to db all user details
+    promises.push(
+      uploadToDb(
+        currentUser.email,
+        nameRef.current.value,
+        gender,
+        ageRef.current.value,
+        phoneRef.current.value,
+        countryRef.current.value,
+        cityRef.current.value,
+        aboutRef.current.value
+      )
+    );
+
+    try {
+      const res = await Promise.all(promises);
+      // console.log("res2", res);
+      // console.log(currentUser);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fileSelectedHandler = (e) => {
+    setSelectedImg(e.target.files[0]);
+  };
+
+  const uploadHandler = async () => {
+    try {
+      await uploadToStorage(selectedImg, currentUser.email);
+      const res = await getFromStorage(currentUser.email);
+      setImgUrl(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const getImg = async () => {
+      try {
+        const res = await getFromStorage(currentUser.email);
+        setImgUrl(res);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getImg();
+  }, [ImgUrl]);
+
+  useEffect(() => {
+    const getDetails = async () => {
+      try {
+        const res = await getFromDb(currentUser.email);
+        // console.log("res", res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getDetails();
+  }, []);
+
   return (
     <div className="profie_div">
-      <div className="img_profile">
-        <i className="fas fa-bone"></i>
-      </div>
-      <form className="profile_form">
+      <form onSubmit={submitHandler} className="profile_form">
+        <div className="img_profile">
+          <img className="user_img" src={ImgUrl} />
+          <input id="img" type="file" onChange={fileSelectedHandler} />
+          <button onClick={uploadHandler}>Upload</button>{" "}
+        </div>
         <span>
-          <label>Name</label>
-          <input autoComplete="on" ref={nameRef} type="text" />
+          <label>
+            <h3>*</h3>Name
+          </label>
+          <input required={true} autoComplete="on" ref={nameRef} type="text" />
+        </span>
+        <span onChange={(e) => setGender(e.target.value)}>
+          <label htmlFor="male">male</label>
+          <input name="gender" type="radio" value="male" id="male" />
+          <label htmlFor="female">Female</label>
+          <input id="female" name="gender" type="radio" value="female" />
+          <label htmlFor="other">Other</label>
+          <input id="other" name="gender" type="radio" value="other" />
         </span>
         <span>
-          <label>male</label>
+          <label htmlFor="age">
+            <h3>*</h3>Age
+          </label>
           <input
-            autoComplete="on"
-            name="gender"
-            ref={genderRef}
-            type="radio"
-            value="female"
-            id="female"
-          />
-          <label>Female</label>
-          <input
-            id="male"
-            autoComplete="on"
-            name="gender"
-            ref={genderRef}
-            type="radio"
-            value="female"
-          />
-          <label>Other</label>
-          <input
-            id="other"
-            autoComplete="on"
-            name="gender"
-            ref={genderRef}
-            type="radio"
-            value="other"
-          />
-        </span>
-        <span>
-          <label htmlFor="age">Age</label>
-          <input
+            required={true}
             min="12"
             id="age"
             autoComplete="on"
@@ -77,37 +216,62 @@ const UserDetails = () => {
             type="number"
           />
         </span>
+        <button onClick={locateUser}>Locate Me</button>
         <span>
-          <label>City</label>
+          <label>
+            {" "}
+            <h3>*</h3>Country
+          </label>
           <input
             required={true}
             autoComplete="off"
-            placeholder="Type and choose"
-            list="cities_list"
-            ref={locationRef}
+            placeholder="Type and choose from list"
+            list="countries_list"
+            ref={countryRef}
             type="text"
-            onChange={clickHandler}
+            onChange={countrySearch}
           ></input>
+          <datalist required={true} id="countries_list">
+            {countries.map((country) => {
+              return <option key={country.code}>{country.name}</option>;
+            })}
+          </datalist>
+        </span>
+        <span>
+          <label>
+            <h3>*</h3>City
+          </label>
+          <input
+            required={true}
+            autoComplete="off"
+            placeholder="Type and choose from list"
+            list="cities_list"
+            ref={cityRef}
+            type="text"
+            onChange={citySearch}
+          />
           <datalist required={true} id="cities_list">
             {cities.map((city) => {
-              return <option key={city._id}>{city.שם_ישוב_לועזי}</option>;
+              return <option key={city.id}>{city.city}</option>;
             })}
           </datalist>
         </span>
         <span>
           <label htmlFor="phone">Phone</label>
-          <input id="phone" autoComplete="on" ref={PhoneRef} type="tel" />
+          <input id="phone" autoComplete="on" ref={phoneRef} type="tel" />
         </span>
         <span>
           <textarea
-            rows="5"
-            cols="75"
+            rows="4"
+            cols="50"
             id="about"
             placeholder="Tell dogs owners about yourself"
             ref={aboutRef}
           />
         </span>
-        <button type="submit">Update</button>
+        <button id="submit_user_details" type="submit">
+          Update
+        </button>
       </form>
     </div>
   );

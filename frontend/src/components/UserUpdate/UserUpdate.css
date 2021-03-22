@@ -24,3 +24,9 @@
 small {
   color: red;
 }
+.msg {
+  position: relative;
+  top: 8rem;
+  padding: 2rem;
+  background-color: rgba(242, 133, 0, 0.397);
+}

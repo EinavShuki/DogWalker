@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const UserUpdate = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -30,7 +31,7 @@ const UserUpdate = () => {
     }
 
     Promise.all(promises)
-      .then(() => history.push("/"))
+      .then(() => setMessage("Updated successfully!"))
       .catch(() => {
         setError("Failed to update account");
       })
@@ -38,35 +39,41 @@ const UserUpdate = () => {
   };
 
   return (
-    <div className="update_div_box">
-      <h2 className="update_tit">Update</h2>
-      <form onSubmit={submitHandler} className="signup_form">
-        <input
-          defaultValue={currentUser.email}
-          autoComplete="on"
-          ref={emailRef}
-          type="email"
-          placeholder="Enter Email"
-        />
-        <input
-          autoComplete="on"
-          ref={passwordRef}
-          type="password"
-          placeholder="Live blank to keep current password"
-        />
-        <input
-          autoComplete="on"
-          ref={passwordConfirmRef}
-          type="password"
-          placeholder="Live blank to keep current password"
-        />
-        <small>{error}</small>
-        <button disabled={loading} type="submit">
-          Update
-        </button>
-      </form>
-      <Link to="/">Cancel</Link>
-    </div>
+    <>
+      {message === "" ? (
+        <div className="update_div_box">
+          <h2 className="update_tit">Update</h2>
+          <form onSubmit={submitHandler} className="signup_form">
+            <input
+              defaultValue={currentUser.email}
+              autoComplete="on"
+              ref={emailRef}
+              type="email"
+              placeholder="Enter Email"
+            />
+            <input
+              autoComplete="on"
+              ref={passwordRef}
+              type="password"
+              placeholder="Live blank to keep current password"
+            />
+            <input
+              autoComplete="on"
+              ref={passwordConfirmRef}
+              type="password"
+              placeholder="Live blank to keep current password"
+            />
+            <small>{error}</small>
+            <button disabled={loading} type="submit">
+              Update
+            </button>
+          </form>
+          <Link to="/">Cancel</Link>
+        </div>
+      ) : (
+        <h2 className="msg">{message}</h2>
+      )}
+    </>
   );
 };
 

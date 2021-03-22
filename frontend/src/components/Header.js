@@ -23,11 +23,16 @@ const Header = () => {
   };
   return (
     <div id="header_nav">
-      <Link to="/">
+      <Link to="/home">
         <i className="fas fa-home"></i>
       </Link>
       {isLogin ? (
-        <h4 onClick={logoutHandler}>Log Out</h4>
+        <div className="right_nav_side">
+          {currentUser && currentUser.displayName && (
+            <Link to="/profile">{currentUser.displayName}</Link>
+          )}
+          | <h4 onClick={logoutHandler}> Log Out</h4>
+        </div>
       ) : (
         <Link to="/login">Log In</Link>
       )}

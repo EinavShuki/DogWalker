@@ -1,13 +1,16 @@
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import EnterScreen from "./screens/EnterScreen";
 import { AuthProvider } from "./contexts/AuthContext";
 import LoginScreen from "./screens/LoginScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
 import UpdateScreen from "./screens/UpdateScreen";
-import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
+import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
+import { StorageProvider } from "./contexts/StorageContext";
+import { DbProvider } from "./contexts/DbContext";
+import HomeScreen from "./screens/HomeScreen";
 
 function App() {
   return (
@@ -17,13 +20,18 @@ function App() {
         <main>
           <Switch>
             <Route path="/" component={EnterScreen} exact />
+            <PrivateRoute path="/home" component={HomeScreen} />
             <Route path="/login" component={LoginScreen} />
-            <PrivateRoute path="/profile" component={ProfileScreen} />
-            <PrivateRoute path="/forget-password" component={ForgetPassword} />
+            <Route path="/forget-password" component={ForgetPasswordScreen} />
+            <StorageProvider>
+              <DbProvider>
+                <PrivateRoute path="/profile" component={ProfileScreen} />
+              </DbProvider>
+            </StorageProvider>
             <PrivateRoute path="/update" component={UpdateScreen} />
           </Switch>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </AuthProvider>
     </Router>
   );

@@ -34,18 +34,25 @@ export const AuthProvider = ({ children }) => {
   };
 
   //update user data
-  function updateEmail(email) {
+  const updateEmail = (email) => {
     return currentUser.updateEmail(email);
-  }
+  };
 
-  function updatePassword(password) {
+  const updatePassword = (password) => {
     return currentUser.updatePassword(password);
-  }
+  };
+
+  const updateProfile = (userName, photo) => {
+    return currentUser.updateProfile({
+      displayName: userName,
+      photoUrl: photo,
+    });
+  };
 
   useEffect(() => {
     //each time we call createUserWithEmailAndPassword it will call this function and set the user for us in DB
-    const unsubscribed = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
+    const unsubscribed = auth.onAuthStateChanged(() => {
+      setCurrentUser(auth.currentUser);
       setLoading(false);
     });
     return unsubscribed;
@@ -60,6 +67,7 @@ export const AuthProvider = ({ children }) => {
     forgetPass,
     updateEmail,
     updatePassword,
+    updateProfile,
   };
   return (
     <AuthContext.Provider value={value}>

@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const [error, setError] = useState("");
-  const [forgetPass, setforgetPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -21,23 +20,20 @@ const Login = () => {
       await login(emailRef.current.value, passwordRef.current.value);
       history.push("/profile");
     } catch (err) {
+      console.log(err);
       if (
-        err.message.match(
-          "There is no user record corresponding to this identifier. The user may have been deleted."
-        )
+        err.message ===
+        "There is no user record corresponding to this identifier. The user may have been deleted."
       )
         setError("User does not exist");
       else if (
-        err.message.match(
-          "The password is invalid or the user does not have a password."
-        )
+        err.message ===
+        "The password is invalid or the user does not have a password."
       ) {
         setError("Wrong password");
-        setforgetPass(true);
       } else setError(err.message);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -58,7 +54,9 @@ const Login = () => {
         />
         <span className="pass_prob">
           <small>{error}</small>
-          {forgetPass && <Link to="/forget-password">Forgot passward</Link>}
+          <Link className="forget_link" to="/forget-password">
+            Forgot passward
+          </Link>
         </span>
         <button disabled={loading} type="submit">
           Log In

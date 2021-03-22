@@ -4,7 +4,7 @@
   border: 1px solid rgba(242, 133, 0, 0.397);
   padding: 2rem 1rem;
   width: 25rem;
-  top: 1rem;
+  top: 7rem;
 }
 .login_tit {
   text-align: center;
@@ -13,4 +13,7 @@
 .pass_prob {
   display: flex;
   justify-content: space-between;
+}
+.forget_link {
+  color: blue;
 }

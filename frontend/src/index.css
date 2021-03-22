@@ -9,14 +9,16 @@ body {
   background-color: #fdfcfa;
   color: black;
 }
-main {
-  height: 80vh;
-  overflow-y: scroll;
-}
 
 h1 {
   font-size: 3rem;
   margin: 1rem 0;
+}
+h2 {
+  font-size: 2.5rem;
+}
+h3 {
+  font-size: 2rem;
 }
 h4 {
   margin: 1rem;
@@ -29,62 +31,74 @@ a,
 a:link,
 a:visited {
   text-decoration: none;
-  color: #fdfcfa;
+}
+label {
+  font-size: 1.1rem;
+}
+small {
+  color: red;
 }
 input,
 textarea {
   border-radius: 6px;
   border: 1px solid black;
   font-family: "Alice", serif;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding: 0.4rem;
 }
 
 /*Header*/
 #header_nav {
+  position: fixed;
+  z-index: 1;
   display: flex;
-  font-size: 1.3rem;
-  color: #fdfcfa;
+  font-size: 1.5rem;
+  top: 0;
   padding: 1rem 2rem;
   width: 100%;
-  background-color: rgba(0, 114, 207, 0.712);
+  background-color: rgb(58, 144, 214);
   border-bottom: 2px solid black;
   justify-content: space-between;
 }
-#header_nav h4 {
+#header_nav h4,
+#header_nav a {
   font-weight: 400;
   cursor: pointer;
-  margin: 0;
+  margin: 0 1rem;
+  color: #fdfcfa;
 }
-
+.right_nav_side {
+  display: flex;
+}
 /*Footer*/
 #footer {
-  display: block;
-  position: absolute;
+  display: flex;
+  position: relative;
   bottom: 0;
-  left: 45%;
+  margin: 0;
+  width: 100%;
+  justify-content: center;
 }
 
 /*enter screen*/
 .container {
-  position: absolute;
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   top: 2.5rem;
-  margin-right: 5rem;
 }
 .welcome_div {
   position: relative;
   display: flex;
   align-items: center;
-  margin-right: 4rem;
 }
 
 .pic_div img {
   position: relative;
-  width: 20rem;
-  height: 33.3rem;
+  width: 25rem;
+  height: 42rem;
+  z-index: 2;
 }
 .paws {
   position: absolute;
@@ -162,18 +176,23 @@ textarea {
 .login_screen_div {
   position: relative;
   top: 3rem;
-  left: -5rem;
+  right: 9rem;
   display: flex;
   justify-content: center;
 }
 .login_screen_div img {
   position: relative;
-  top: 7.7rem;
+  top: 21rem;
 }
 /* profile screen*/
 .profile_screen_div {
   display: flex;
   justify-content: center;
+  background-image: url(img/sunset.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+
+  background-repeat: no-repeat;
 }
 
 /*forget-password*/

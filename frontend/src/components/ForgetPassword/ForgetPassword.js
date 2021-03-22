@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router";
+import "./ForgetPassword.css";
+
 const ForgetPassword = () => {
   const [error, setError] = useState("");
 
@@ -27,7 +29,7 @@ const ForgetPassword = () => {
   return (
     <div className="forget_div">
       <h2 className="forget_tit">Reset Passward</h2>
-      <form onSubmit={submitHandler} className="signup_form">
+      <form onSubmit={submitHandler} className="forget_form">
         <input
           autoComplete="on"
           ref={emailRef}
