@@ -5,13 +5,13 @@ import { useAuth } from "../contexts/AuthContext";
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth();
+  const { currentuser, logout } = useAuth();
   const history = useHistory();
 
   useEffect(() => {
-    if (currentUser) setIsLogin(true);
+    if (currentuser) setIsLogin(true);
     else setIsLogin(false);
-  }, [currentUser]);
+  }, [currentuser]);
   const logoutHandler = async () => {
     try {
       setError("");
@@ -28,8 +28,8 @@ const Header = () => {
       </Link>
       {isLogin ? (
         <div className="right_nav_side">
-          {currentUser && currentUser.displayName && (
-            <Link to="/profile">{currentUser.displayName}</Link>
+          {currentuser && currentuser.displayName && (
+            <Link to="/profile">{currentuser.displayName}</Link>
           )}
           | <h4 onClick={logoutHandler}> Log Out</h4>
         </div>

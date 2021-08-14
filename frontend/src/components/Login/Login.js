@@ -17,10 +17,14 @@ const Login = () => {
     try {
       setLoading(true);
       setError("");
-      await login(emailRef.current.value, passwordRef.current.value);
+      const res = await login(
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+      // console.log(res);
       history.push("/profile");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       if (
         err.message ===
         "There is no user record corresponding to this identifier. The user may have been deleted."

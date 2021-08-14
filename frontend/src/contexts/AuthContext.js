@@ -10,7 +10,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentuser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
   //sign up to site
@@ -35,15 +35,15 @@ export const AuthProvider = ({ children }) => {
 
   //update user data
   const updateEmail = (email) => {
-    return currentUser.updateEmail(email);
+    return currentuser.updateEmail(email);
   };
 
   const updatePassword = (password) => {
-    return currentUser.updatePassword(password);
+    return currentuser.updatePassword(password);
   };
 
   const updateProfile = (userName, photo) => {
-    return currentUser.updateProfile({
+    return currentuser.updateProfile({
       displayName: userName,
       photoUrl: photo,
     });
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
   //valuse we provise in our custom hook -auth
   const value = {
-    currentUser,
+    currentuser,
     signup,
     login,
     logout,

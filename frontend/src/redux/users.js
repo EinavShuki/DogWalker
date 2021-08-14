@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CURRENT_USER, USERS } from "../api";
+// import { users as USERS } from "../contexts/api";
+import { useDb } from "../contexts/DbContext";
 
 export const usersSlice = createSlice({
   name: "users",
@@ -18,7 +19,7 @@ export const usersSlice = createSlice({
       state.users = action.payload;
       state.loading = "idle";
     },
-    userLoading: (state, action) => {
+    userLoading: (state) => {
       state.loading = "pending";
     },
     userUpdateRecieved: (state) => {
@@ -44,11 +45,15 @@ export const {
 
 export default usersSlice.reducer;
 
-export const fetchCurrentUser = () => async (dispatch) => {
+export const fetchCurrentUser = (email) => async (dispatch) => {
+  // const { getFromDb } = useDb();
   dispatch(userLoading());
   try {
+    console.log(email);
     // WILL BE API CALL
-    dispatch(currentUserReceived(CURRENT_USER));
+    // const res = await getFromDb(email);
+    // console.log(res.data());
+    dispatch(currentUserReceived(email));
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }
@@ -58,7 +63,7 @@ export const fetchUsers = () => async (dispatch) => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    setTimeout(() => dispatch(usersReceived(USERS)), 2000);
+    // setTimeout(() => dispatch(usersReceived(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }
@@ -68,7 +73,7 @@ export const UpdateUser = (email, phone) => async (dispatch) => {
   dispatch(userLoading());
   try {
     // WILL BE API CALL
-    setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
+    // setTimeout(() => dispatch(userUpdateRecieved(USERS)), 2000);
   } catch (error) {
     dispatch(userError({ error: "some api error" }));
   }

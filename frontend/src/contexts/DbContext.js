@@ -33,7 +33,7 @@ export const DbProvider = ({ children }) => {
 
   //get data from doc
   const getFromDb = (email) => {
-    var dbRef = db.collection("users").doc("one");
+    var dbRef = db.collection("users").doc(email);
 
     return dbRef.get();
   };

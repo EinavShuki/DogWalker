@@ -4,11 +4,13 @@ import axios from "axios";
 import { useStorage } from "../../contexts/StorageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDb } from "../../contexts/DbContext";
+// import { useDispatch, useSelector } from "react-redux";
+// import { UpdateUser, fetchCurrentUser } from "../../redux/users";
 
 const UserDetails = () => {
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState("other");
   const [wikiDataId, setWikiDataId] = useState();
   const [selectedImg, setSelectedImg] = useState(null);
   const [ImgUrl, setImgUrl] = useState("");
@@ -16,7 +18,7 @@ const UserDetails = () => {
   const [lan, setLan] = useState("");
 
   const { uploadToStorage, getFromStorage } = useStorage();
-  const { updateProfile } = useAuth();
+  const { updateProfile, currentuser } = useAuth();
   const { uploadToDb, getFromDb } = useDb();
 
   const ageRef = useRef();
@@ -26,11 +28,9 @@ const UserDetails = () => {
   const aboutRef = useRef();
   const phoneRef = useRef();
 
-  const { currentUser } = useAuth();
-
+  //finding user location
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition(({ coords }) => {
-      console.log("coords", coords);
       if (coords.latitude > 0) setLat("+" + coords.latitude);
       else setLat("-" + coords.latitude);
       if (coords.longitude > 0) setLan("+" + coords.longitude);
@@ -115,14 +115,13 @@ const UserDetails = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     const promises = [];
     //update name and image to current user
     promises.push(updateProfile(nameRef.current.value, ImgUrl));
     //update to db all user details
     promises.push(
       uploadToDb(
-        currentUser.email,
+        currentuser.email,
         nameRef.current.value,
         gender,
         ageRef.current.value,
@@ -134,9 +133,7 @@ const UserDetails = () => {
     );
 
     try {
-      const res = await Promise.all(promises);
-      // console.log("res2", res);
-      // console.log(currentUser);
+      await Promise.all(promises);
     } catch (error) {
       console.error(error);
     }
@@ -146,10 +143,11 @@ const UserDetails = () => {
     setSelectedImg(e.target.files[0]);
   };
 
-  const uploadHandler = async () => {
+  const uploadHandler = async (e) => {
+    e.preventDefault();
     try {
-      await uploadToStorage(selectedImg, currentUser.email);
-      const res = await getFromStorage(currentUser.email);
+      await uploadToStorage(selectedImg, currentuser.email);
+      const res = await getFromStorage(currentuser.email);
       setImgUrl(res);
     } catch (error) {
       console.error(error);
@@ -159,9 +157,8 @@ const UserDetails = () => {
   useEffect(() => {
     const getImg = async () => {
       try {
-        const res = await getFromStorage(currentUser.email);
+        const res = await getFromStorage(currentuser.email);
         setImgUrl(res);
-        console.log(res);
       } catch (error) {
         console.error(error);
       }
@@ -172,8 +169,16 @@ const UserDetails = () => {
   useEffect(() => {
     const getDetails = async () => {
       try {
-        const res = await getFromDb(currentUser.email);
-        // console.log("res", res);
+        const res = await getFromDb(currentuser.email);
+        if (res.data()) {
+          nameRef.current.value = res.data().userName;
+          setGender(res.data().gender);
+          ageRef.current.value = res.data().age;
+          phoneRef.current.value = res.data().phone;
+          countryRef.current.value = res.data().country;
+          cityRef.current.value = res.data().city;
+          aboutRef.current.value = res.data().about;
+        }
       } catch (error) {
         console.error(error);
       }
@@ -187,7 +192,7 @@ const UserDetails = () => {
         <div className="img_profile">
           <img className="user_img" src={ImgUrl} />
           <input id="img" type="file" onChange={fileSelectedHandler} />
-          <button onClick={uploadHandler}>Upload</button>{" "}
+          <button onClick={(e) => uploadHandler(e)}>Upload</button>{" "}
         </div>
         <span>
           <label>

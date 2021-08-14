@@ -18,6 +18,7 @@ export const StorageProvider = ({ children }) => {
 
   const getFromStorage = (userEmail) => {
     let storageRef = storage.ref();
+
     return storageRef.child("photos/" + userEmail).getDownloadURL();
   };
 
