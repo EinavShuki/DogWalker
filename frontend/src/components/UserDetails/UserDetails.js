@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./UserDetails.css";
 import axios from "axios";
 import { useStorage } from "../../contexts/StorageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDb } from "../../contexts/DbContext";
+// import Cropper from "react-easy-crop";
+
 // import { useDispatch, useSelector } from "react-redux";
 // import { UpdateUser, fetchCurrentUser } from "../../redux/users";
 
@@ -16,6 +18,8 @@ const UserDetails = () => {
   const [ImgUrl, setImgUrl] = useState("");
   const [lat, setLat] = useState("");
   const [lan, setLan] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
 
   const { uploadToStorage, getFromStorage } = useStorage();
   const { updateProfile, currentuser } = useAuth();
@@ -116,9 +120,10 @@ const UserDetails = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const promises = [];
+
     //update name and image to current user
     promises.push(updateProfile(nameRef.current.value, ImgUrl));
-    //update to db all user details
+    //update to db all user's details
     promises.push(
       uploadToDb(
         currentuser.email,
@@ -134,6 +139,7 @@ const UserDetails = () => {
 
     try {
       await Promise.all(promises);
+      //redirect to user page
     } catch (error) {
       console.error(error);
     }
@@ -186,14 +192,32 @@ const UserDetails = () => {
     getDetails();
   }, []);
 
+  // const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  //   console.log(croppedArea, croppedAreaPixels);
+  // }, []);
+
   return (
-    <div className="profie_div">
+    <div className="update_user_details_div">
       <form onSubmit={submitHandler} className="profile_form">
         <div className="img_profile">
-          <img className="user_img" src={ImgUrl} />
+          {ImgUrl !== "" && (
+            <img className="user_img" src={ImgUrl} draggable="false" />
+          )}
           <input id="img" type="file" onChange={fileSelectedHandler} />
           <button onClick={(e) => uploadHandler(e)}>Upload</button>{" "}
         </div>
+        {/* {ImgUrl !== "" && (
+          <Cropper
+            image={ImgUrl}
+            crop={crop}
+            zoom={zoom}
+            aspect={3 / 3}
+            cropShape={"round"}
+            onCropChange={setCrop}
+            onCropComplete={onCropComplete}
+            onZoomChange={setZoom}
+          />
+        )} */}
         <span>
           <label>
             <h3>*</h3>Name

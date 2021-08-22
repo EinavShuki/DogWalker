@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import DropDown from "./DropDown/DropDown";
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState("");
+  const [showDropDown, setShowDropDown] = useState(false);
   const { currentuser, logout } = useAuth();
   const history = useHistory();
 
@@ -23,18 +25,36 @@ const Header = () => {
   };
   return (
     <div id="header_nav">
-      <Link to="/home">
+      <Link className="header_link" to="/home">
         <i className="fas fa-home"></i>
       </Link>
       {isLogin ? (
-        <div className="right_nav_side">
+        <div
+          className={
+            showDropDown ? "right_nav_side_dropdown" : "right_nav_side"
+          }
+          onMouseEnter={() => {
+            setShowDropDown(true);
+          }}
+        >
           {currentuser && currentuser.displayName && (
-            <Link to="/profile">{currentuser.displayName}</Link>
+            <Link className="header_link" to="/profile">
+              {currentuser.displayName}
+            </Link>
           )}
-          | <h4 onClick={logoutHandler}> Log Out</h4>
+          <span
+            onMouseLeave={() => {
+              setShowDropDown(false);
+            }}
+          >
+            <DropDown />
+          </span>
+          |<h3 onClick={logoutHandler}> Log Out</h3>
         </div>
       ) : (
-        <Link to="/login">Log In</Link>
+        <Link className="header_link" to="/login">
+          Log In
+        </Link>
       )}
       {error}
     </div>

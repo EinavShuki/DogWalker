@@ -1,0 +1,61 @@
+.profie_div {
+  width: 35rem;
+  height: fit-content;
+  position: relative;
+  padding: 1rem;
+  border-radius: 15px;
+  top: 7rem;
+  margin-bottom: 10rem;
+  background-color: rgba(255, 255, 255, 0.582);
+}
+.img_profile_page {
+  cursor: default;
+  margin-top: -6%;
+  display: flex;
+  justify-content: center;
+}
+.question_mark_user_page {
+  display: inline-block;
+}
+.fa-question-circle {
+  color: rgba(0, 0, 0, 0.37);
+  padding: 10px;
+}
+.fa-question-circle:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+.user_details h3 {
+  margin: 3% 0;
+  font-family: BenchNine;
+}
+.user_details > h3:nth-child(2) {
+  margin: 0;
+  text-decoration: underline;
+}
+.user_details ul {
+  list-style: none;
+  font-size: 1.5rem;
+}
+.user_details li {
+  display: flex;
+  align-items: center; /*sets the icon and the text to the same row*/
+  margin-bottom: 1%;
+}
+.user_details li icons {
+  cursor: pointer;
+}
+
+.user_details li span {
+  margin-left: 1%;
+}
+.parenthesis {
+  font-size: 1.6;
+  font-weight: bold;
+  font-style: italic;
+}
+
+@media screen and (max-width: 700px) {
+  .profie_div {
+    width: 70vw;
+  }
+}

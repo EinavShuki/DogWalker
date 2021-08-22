@@ -11,6 +11,7 @@ import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import { StorageProvider } from "./contexts/StorageContext";
 import { DbProvider } from "./contexts/DbContext";
 import HomeScreen from "./screens/HomeScreen";
+import UpdateUserDetails from "./screens/UpdateUserDetails";
 
 function App() {
   return (
@@ -26,9 +27,13 @@ function App() {
             <StorageProvider>
               <DbProvider>
                 <PrivateRoute path="/profile" component={ProfileScreen} />
+                <PrivateRoute
+                  path="/user-details"
+                  component={UpdateUserDetails}
+                />
+                <PrivateRoute path="/update" component={UpdateScreen} />
               </DbProvider>
             </StorageProvider>
-            <PrivateRoute path="/update" component={UpdateScreen} />
           </Switch>
         </main>
         {/* <Footer /> */}

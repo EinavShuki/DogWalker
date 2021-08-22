@@ -24,7 +24,6 @@ const Login = () => {
       // console.log(res);
       history.push("/profile");
     } catch (err) {
-      // console.log(err);
       if (
         err.message ===
         "There is no user record corresponding to this identifier. The user may have been deleted."
