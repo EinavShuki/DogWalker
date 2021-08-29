@@ -59,6 +59,7 @@ textarea {
   background-color: rgb(58, 144, 214);
   border-bottom: 2px solid black;
   justify-content: space-between;
+  align-self: center;
 }
 #header_nav h3,
 #header_nav .header_link {
@@ -92,13 +93,19 @@ textarea {
   justify-content: center;
 }
 
-/*enter screen*/
-.container {
+/*enter and dogwalker screens*/
+.container,
+.container_dogwalker {
   position: relative;
   display: flex;
   justify-content: space-around;
   align-items: center;
   top: 2.5rem;
+}
+.container_dogwalker {
+  top: 11rem;
+  justify-content: space-between;
+  padding: 0 3rem;
 }
 .welcome_div {
   position: relative;
@@ -112,6 +119,7 @@ textarea {
   height: 42rem;
   z-index: 2;
 }
+
 .paws {
   position: absolute;
   font-size: 3rem;
@@ -146,7 +154,8 @@ textarea {
   position: relative;
   transform: scale(2);
   margin: 1rem;
-  bottom: 7rem;
+  margin: 1rem;
+  top: 7rem;
 }
 @keyframes fadeIn {
   0% {
@@ -172,17 +181,49 @@ textarea {
   }
 }
 
-.sign_in_div {
+.talking_dog {
+  display: flex;
+  justify-content: center;
+}
+
+.talking_dog > h3 {
+  position: relative;
+  left: -1.5rem;
+  width: 40vw;
+  height: 15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  color: rgba(245, 121, 21, 0.959);
+  text-shadow: 0 0 1px black;
+}
+.talking_dog img {
+  width: 20rem;
+  position: relative;
+  top: 1rem;
+}
+
+.sign_in_div,
+.user_type_div {
   display: grid;
   row-gap: 2rem;
 }
-.sign_in_div button {
+.sign_in_div {
+  margin: 0 1rem 10rem 0;
+}
+.sign_in_div button,
+.user_type_div button {
   cursor: pointer;
   font-size: 2rem;
   padding: 1rem 5rem;
   color: #fdfcfa;
   border: 2px solid black;
   background-color: rgba(0, 114, 207, 0.712);
+  height: 8rem;
+}
+.user_type_div button {
+  background-color: rgba(245, 121, 21, 0.959);
+  padding: 1rem 1rem;
 }
 /* login screen */
 .login_screen_div {
@@ -230,8 +271,17 @@ textarea {
   position: relative;
   top: 10rem;
 }
-
-@media (max-width: 700px) {
+@media (max-width: 1150px) {
+  .talking_dog > h3 {
+    height: 11rem;
+    font-size: 1.5rem;
+    top: -4rem;
+  }
+  .talking_dog img {
+    width: 15rem;
+  }
+}
+@media (max-width: 800px) {
   h1 {
     font-size: 2.5rem;
     margin: 0.5rem 0;
@@ -244,5 +294,56 @@ textarea {
   }
   h4 {
     font-size: 1rem;
+  }
+  input,
+  textarea {
+    font-size: 0.9rem;
+  }
+  .paws {
+    font-size: 1.5rem;
+  }
+  .two {
+    left: 4rem;
+  }
+  .three {
+    top: 4.5rem;
+  }
+
+  .container,
+  .container_dogwalker {
+    display: grid;
+    margin: auto;
+    top: 5rem;
+  }
+  .container_dogwalker {
+    top: 11rem;
+    padding: 0;
+  }
+  .sign_in_div {
+    margin: 0 3rem;
+  }
+  .sign_in_div button,
+  .user_type_div button {
+    width: 80vw;
+    margin: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+  /* white puppy */
+  .talking_dog img {
+    width: 15rem;
+  }
+  /* black dog  */
+  .pic_div img {
+    width: 12rem;
+    height: 20rem;
+
+    position: relative;
+  }
+  @media (max-width: 400px) {
+    .talking_dog > h3 {
+      font-size: 1rem;
+    }
   }
 }

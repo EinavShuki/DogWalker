@@ -33,7 +33,9 @@ const UserUpdate = () => {
       .catch(() => {
         setError("Failed to update account");
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

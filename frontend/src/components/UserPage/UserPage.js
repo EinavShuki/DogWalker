@@ -6,12 +6,14 @@ import { useDb } from "../../contexts/DbContext";
 import PopUp from "../PopUp/PopUp";
 import { FcPhone } from "react-icons/fc";
 import { SiGmail } from "react-icons/si";
+import Loader from "../Loader/Loader";
 
 const UserPage = () => {
   const [ImgUrl, setImgUrl] = useState("");
   const [userData, setUserData] = useState({});
   const [genderAddressing, setGenderAddressing] = useState("they have");
   const [showPopUp, setShowPopUp] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { currentuser } = useAuth();
   const { getFromDb } = useDb();
@@ -19,6 +21,7 @@ const UserPage = () => {
 
   useEffect(() => {
     const getImg = async () => {
+      setLoading(true);
       try {
         const res = await getFromStorage(currentuser.email);
         setImgUrl(res);
@@ -48,6 +51,13 @@ const UserPage = () => {
     getImg();
   }, []);
 
+  useEffect(() => {
+    if (ImgUrl !== "") {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  }, [ImgUrl]);
   const QMarkHoverHandler = () => {
     setShowPopUp(true);
   };
@@ -67,7 +77,7 @@ const UserPage = () => {
         {showPopUp && <PopUp />}
       </div>
       <div className="img_profile_page">
-        <img className="user_img" src={ImgUrl} />
+        {loading ? <Loader /> : <img className="user_img" src={ImgUrl} />}
       </div>
       <div className="user_details">
         <h3>

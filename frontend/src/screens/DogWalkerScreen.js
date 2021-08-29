@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import SignUp from "../components/SignUp/SignUp";
-import dogpic from "../img/dog.png";
+import talking_dog from "../img/talking_dog.png";
 
-const EnterScreen = () => {
+const DogWalkerScreen = () => {
   const [signUp, setSignUp] = useState(false);
   const history = useHistory();
+
   const signUpHandler = () => {
     setSignUp(true);
   };
@@ -14,22 +15,14 @@ const EnterScreen = () => {
   };
 
   return (
-    <div className="container">
-      <div className="welcome_div">
-        <div className="pic_div">
-          <img src={dogpic} alt="dog pic" />
-        </div>
-        <span>
-          <h1>Welcome to DogWalker</h1>
+    <div className="container_dogwalker">
+      <div className="dogwalker_div">
+        <div className="talking_dog">
+          <img src={talking_dog} />
           <h3>
-            Here you can find the perfect dog walker
-            <br></br> or sign up as one
+            A DogWalker is a great responsibility, along with the joy that comes
+            with the job. Be patient and kind, and don't forget to have fun!
           </h3>
-        </span>
-        <div className="paws">
-          <i className="fas fa-paw one"></i>
-          <i className="fas fa-paw two"></i>
-          <i className="fas fa-paw three"></i>
         </div>
       </div>
       {signUp ? (
@@ -44,4 +37,4 @@ const EnterScreen = () => {
   );
 };
 
-export default EnterScreen;
+export default DogWalkerScreen;

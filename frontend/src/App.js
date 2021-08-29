@@ -1,7 +1,7 @@
 // import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import EnterScreen from "./screens/EnterScreen";
+import DogWalkerScreen from "./screens/DogWalkerScreen";
 import { AuthProvider } from "./contexts/AuthContext";
 import LoginScreen from "./screens/LoginScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -20,8 +20,8 @@ function App() {
         <Header />
         <main>
           <Switch>
-            <Route path="/" component={EnterScreen} exact />
-            <PrivateRoute path="/home" component={HomeScreen} />
+            <Route path="/" component={HomeScreen} exact />
+            <Route path="/dogWalker" component={DogWalkerScreen} exact />
             <Route path="/login" component={LoginScreen} />
             <Route path="/forget-password" component={ForgetPasswordScreen} />
             <StorageProvider>

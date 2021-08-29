@@ -25,7 +25,7 @@ const Header = () => {
   };
   return (
     <div id="header_nav">
-      <Link className="header_link" to="/home">
+      <Link className="header_link" to="/">
         <i className="fas fa-home"></i>
       </Link>
       {isLogin ? (

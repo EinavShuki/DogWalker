@@ -4,6 +4,7 @@ import axios from "axios";
 import { useStorage } from "../../contexts/StorageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDb } from "../../contexts/DbContext";
+import { useHistory } from "react-router";
 // import Cropper from "react-easy-crop";
 
 // import { useDispatch, useSelector } from "react-redux";
@@ -18,8 +19,12 @@ const UserDetails = () => {
   const [ImgUrl, setImgUrl] = useState("");
   const [lat, setLat] = useState("");
   const [lan, setLan] = useState("");
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const [error, setError] = useState("");
+
+  // const [crop, setCrop] = useState({ x: 0, y: 0 });
+  // const [zoom, setZoom] = useState(1);
+
+  const history = useHistory();
 
   const { uploadToStorage, getFromStorage } = useStorage();
   const { updateProfile, currentuser } = useAuth();
@@ -139,9 +144,11 @@ const UserDetails = () => {
 
     try {
       await Promise.all(promises);
+      setError("");
       //redirect to user page
+      history.push("/profile");
     } catch (error) {
-      console.error(error);
+      setError("There was a problem with updating your data");
     }
   };
 
@@ -298,6 +305,7 @@ const UserDetails = () => {
             ref={aboutRef}
           />
         </span>
+        <small>{error}</small>
         <button id="submit_user_details" type="submit">
           Update
         </button>

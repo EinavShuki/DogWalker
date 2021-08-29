@@ -70,9 +70,27 @@
   margin: auto;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .user_img {
     width: 100px;
     height: 100px;
+  }
+  textarea#about {
+    width: 80vw;
+  }
+  .profile_form {
+    width: 80vw;
+  }
+  .profile_form label {
+    width: 80px;
+  }
+  .profile_form span {
+    margin: 0;
+  }
+  .profile_form button {
+    margin: auto;
+  }
+  .img_profile {
+    margin-left: 0;
   }
 }
