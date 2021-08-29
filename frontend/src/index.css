@@ -280,6 +280,14 @@ textarea {
   .talking_dog img {
     width: 15rem;
   }
+  .login_screen_div {
+    top: 7rem;
+    right: 0;
+    display: grid;
+  }
+  .login_screen_div img {
+    top: 0;
+  }
 }
 @media (max-width: 800px) {
   h1 {

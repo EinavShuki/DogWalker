@@ -17,3 +17,14 @@
 .forget_link {
   color: blue;
 }
+@media screen and (max-width: 1150px) {
+  .login_div {
+    top: 0;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .login_div {
+    width: inherit;
+  }
+}
