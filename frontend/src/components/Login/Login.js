@@ -17,10 +17,7 @@ const Login = () => {
     try {
       setLoading(true);
       setError("");
-      const res = await login(
-        emailRef.current.value,
-        passwordRef.current.value
-      );
+      await login(emailRef.current.value, passwordRef.current.value);
       // console.log(res);
       history.push("/profile");
     } catch (err) {

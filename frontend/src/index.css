@@ -242,7 +242,7 @@ textarea {
   display: flex;
   justify-content: center;
   background-image: url(./img/sunglasses.jpg);
-  min-height: 100vh;
+  min-height: 120vh;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;

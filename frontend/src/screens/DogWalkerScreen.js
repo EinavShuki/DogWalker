@@ -18,7 +18,7 @@ const DogWalkerScreen = () => {
     <div className="container_dogwalker">
       <div className="dogwalker_div">
         <div className="talking_dog">
-          <img src={talking_dog} />
+          <img src={talking_dog} alt="dog_picture" />
           <h3>
             A DogWalker is a great responsibility, along with the joy that comes
             with the job. Be patient and kind, and don't forget to have fun!

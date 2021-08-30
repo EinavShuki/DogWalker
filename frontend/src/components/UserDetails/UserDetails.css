@@ -19,7 +19,7 @@
 }
 .profile_form label {
   float: left;
-  width: 90px;
+  min-width: 90px;
   text-align: right;
 }
 .profile_form h3 {
@@ -36,9 +36,54 @@
   overflow: hidden;
 }
 .img_profile {
-  cursor: pointer;
   position: relative;
   margin-left: 1.5rem;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+}
+.checkbox label {
+  cursor: pointer;
+  margin-left: 1rem;
+}
+.checkmark {
+  position: absolute;
+  cursor: pointer;
+  top: initial;
+  left: 2.1rem;
+  height: 20px;
+  width: 20px;
+  background-color: transparent;
+  font-size: 0;
+  border: 2px solid black;
+}
+
+.checkbox input {
+  z-index: 2;
+  opacity: 0;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.checkbox input:checked ~ .checkmark {
+  background-color: rgba(0, 144, 0, 0.705);
+  color: black;
+  border: 2px solid black;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+.checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
 }
 
 #img {
@@ -82,7 +127,7 @@
     width: 80vw;
   }
   .profile_form label {
-    width: 80px;
+    min-width: 80px;
   }
   .profile_form span {
     margin: 0;

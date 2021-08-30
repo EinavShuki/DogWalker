@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./UserDetails.css";
 import axios from "axios";
 import { useStorage } from "../../contexts/StorageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDb } from "../../contexts/DbContext";
 import { useHistory } from "react-router";
+import bone from "../../img/bone.png";
+import Loader from "../Loader/Loader";
+
 // import Cropper from "react-easy-crop";
 
 // import { useDispatch, useSelector } from "react-redux";
@@ -14,12 +17,14 @@ const UserDetails = () => {
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
   const [gender, setGender] = useState("other");
+  const [allowWhatsapp, setAllowWhatsapp] = useState(false);
   const [wikiDataId, setWikiDataId] = useState();
   const [selectedImg, setSelectedImg] = useState(null);
   const [ImgUrl, setImgUrl] = useState("");
   const [lat, setLat] = useState("");
   const [lan, setLan] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // const [crop, setCrop] = useState({ x: 0, y: 0 });
   // const [zoom, setZoom] = useState(1);
@@ -38,7 +43,8 @@ const UserDetails = () => {
   const phoneRef = useRef();
 
   //finding user location
-  const locateUser = () => {
+  const locateUser = (e) => {
+    e.preventDefault();
     navigator.geolocation.getCurrentPosition(({ coords }) => {
       if (coords.latitude > 0) setLat("+" + coords.latitude);
       else setLat("-" + coords.latitude);
@@ -136,6 +142,7 @@ const UserDetails = () => {
         gender,
         ageRef.current.value,
         phoneRef.current.value,
+        allowWhatsapp,
         countryRef.current.value,
         cityRef.current.value,
         aboutRef.current.value
@@ -158,10 +165,13 @@ const UserDetails = () => {
 
   const uploadHandler = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
     try {
       await uploadToStorage(selectedImg, currentuser.email);
       const res = await getFromStorage(currentuser.email);
       setImgUrl(res);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -172,6 +182,12 @@ const UserDetails = () => {
       try {
         const res = await getFromStorage(currentuser.email);
         setImgUrl(res);
+
+        if (ImgUrl !== "") {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1000);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -188,6 +204,7 @@ const UserDetails = () => {
           setGender(res.data().gender);
           ageRef.current.value = res.data().age;
           phoneRef.current.value = res.data().phone;
+          setAllowWhatsapp(res.data().allowWhatsapp);
           countryRef.current.value = res.data().country;
           cityRef.current.value = res.data().city;
           aboutRef.current.value = res.data().about;
@@ -207,11 +224,23 @@ const UserDetails = () => {
     <div className="update_user_details_div">
       <form onSubmit={submitHandler} className="profile_form">
         <div className="img_profile">
-          {ImgUrl !== "" && (
-            <img className="user_img" src={ImgUrl} draggable="false" />
+          {!loading && ImgUrl !== "" ? (
+            <img
+              className="user_img"
+              src={ImgUrl}
+              alt={bone}
+              draggable="false"
+            />
+          ) : (
+            <Loader />
           )}
           <input id="img" type="file" onChange={fileSelectedHandler} />
-          <button onClick={(e) => uploadHandler(e)}>Upload</button>{" "}
+          <button
+            disabled={selectedImg == null}
+            onClick={(e) => uploadHandler(e)}
+          >
+            Upload
+          </button>{" "}
         </div>
         {/* {ImgUrl !== "" && (
           <Cropper
@@ -231,7 +260,7 @@ const UserDetails = () => {
           </label>
           <input required={true} autoComplete="on" ref={nameRef} type="text" />
         </span>
-        <span onChange={(e) => setGender(e.target.value)}>
+        <span defaultValue={gender} onChange={(e) => setGender(e.target.value)}>
           <label htmlFor="male">male</label>
           <input name="gender" type="radio" value="male" id="male" />
           <label htmlFor="female">Female</label>
@@ -252,7 +281,7 @@ const UserDetails = () => {
             type="number"
           />
         </span>
-        <button onClick={locateUser}>Locate Me</button>
+        <button onClick={(e) => locateUser(e)}>Locate Me</button>
         <span>
           <label>
             {" "}
@@ -296,11 +325,24 @@ const UserDetails = () => {
           <label htmlFor="phone">Phone</label>
           <input id="phone" autoComplete="on" ref={phoneRef} type="tel" />
         </span>
+        <span className="checkbox">
+          <input
+            onChange={() => {
+              setAllowWhatsapp((prev) => !prev);
+            }}
+            checked={allowWhatsapp}
+            type="checkbox"
+            id="whatsapp"
+          />
+          <span className="checkmark">&#10005;</span>
+          <label htmlFor="whatsapp">Allow Whatsapp contact</label>
+        </span>
         <span>
           <textarea
             rows="4"
             cols="50"
             id="about"
+            maxLength="150"
             placeholder="Tell dogs owners about yourself"
             ref={aboutRef}
           />

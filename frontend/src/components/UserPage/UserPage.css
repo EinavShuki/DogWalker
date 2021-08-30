@@ -41,10 +41,29 @@
   align-items: center; /*sets the icon and the text to the same row*/
   margin-bottom: 1%;
 }
-.user_details li icons {
-  cursor: pointer;
-}
 
+.user_details a {
+  cursor: pointer;
+  transition: all 150ms ease-in;
+}
+.user_details a:nth-child(1):link {
+  color: black;
+}
+.user_details a:nth-child(1):hover {
+  color: rgb(211, 30, 30);
+}
+.user_details a:hover {
+  transform: scale(1.1);
+}
+.user_details a:active {
+  transform: scale(0.9);
+}
+.whatsapp_icon {
+  color: white;
+  background-color: rgb(48, 165, 48);
+  border-radius: 100%;
+  margin-left: 0.5rem;
+}
 .user_details li span {
   margin-left: 1%;
 }
@@ -52,6 +71,8 @@
   font-size: 1.6;
   font-weight: bold;
   font-style: italic;
+  color: rgba(245, 121, 21, 0.959);
+  text-shadow: 0 0 0.3px black;
 }
 
 @media screen and (max-width: 800px) {

@@ -16,6 +16,7 @@ export const DbProvider = ({ children }) => {
     gender,
     age,
     phone,
+    allowWhatsapp,
     country,
     city,
     about
@@ -25,6 +26,7 @@ export const DbProvider = ({ children }) => {
       gender,
       age,
       phone,
+      allowWhatsapp,
       country,
       city,
       about,

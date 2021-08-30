@@ -6,7 +6,9 @@ import { useDb } from "../../contexts/DbContext";
 import PopUp from "../PopUp/PopUp";
 import { FcPhone } from "react-icons/fc";
 import { SiGmail } from "react-icons/si";
+import { ImWhatsapp } from "react-icons/im";
 import Loader from "../Loader/Loader";
+import axios from "axios";
 
 const UserPage = () => {
   const [ImgUrl, setImgUrl] = useState("");
@@ -14,6 +16,7 @@ const UserPage = () => {
   const [genderAddressing, setGenderAddressing] = useState("they have");
   const [showPopUp, setShowPopUp] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [phoneWithCallingCode, setPhoneWithCallingCode] = useState(0);
 
   const { currentuser } = useAuth();
   const { getFromDb } = useDb();
@@ -42,6 +45,8 @@ const UserPage = () => {
           case "female":
             setGenderAddressing("she has");
             break;
+          default:
+            break;
         }
       } catch (error) {
         console.error(error);
@@ -49,6 +54,7 @@ const UserPage = () => {
     };
     getDetails();
     getImg();
+    if (userData.allowWhatsapp) callingCodeSearch();
   }, []);
 
   useEffect(() => {
@@ -64,6 +70,30 @@ const UserPage = () => {
 
   const QMarkStopHoverHandler = () => {
     setShowPopUp(false);
+  };
+
+  const callingCodeSearch = async () => {
+    setPhoneWithCallingCode([]);
+    const options = {
+      method: "GET",
+      url: "https://restcountries.eu/rest/v2/name/Israel",
+
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    try {
+      const { data } = await axios(options);
+      let tmpPhone = userData.phone;
+
+      if (tmpPhone[0] !== "+") {
+        if (tmpPhone[0] == 0) tmpPhone = Number(tmpPhone);
+        setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -89,15 +119,24 @@ const UserPage = () => {
         <br></br>
         <ul>
           <li>
-            <icons>
+            <a href={`tel:${userData.phone}`}>
+              {" "}
               <FcPhone />
-            </icons>
+            </a>{" "}
+            {userData.allowWhatsapp && (
+              <a
+                href={`https://wa.me/+${phoneWithCallingCode}?text=Hello, I saw your ad on the DogWalker site. Are you available to speak??`}
+              >
+                <ImWhatsapp className="whatsapp_icon" />
+              </a>
+            )}
             <span> {userData.phone}</span>
           </li>
           <li>
-            <icons className="interactiv_icon">
+            <a href={`mailto:${currentuser.email}`}>
+              {" "}
               <SiGmail />
-            </icons>
+            </a>
             <span> {currentuser.email}</span>
           </li>
         </ul>

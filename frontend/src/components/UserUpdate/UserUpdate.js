@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./UserUpdate.css";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
 
 const UserUpdate = () => {
   const [error, setError] = useState("");

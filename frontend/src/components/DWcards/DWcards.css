@@ -1,0 +1,5 @@
+.cards_container {
+  display: grid;
+  background-color: rgba(245, 121, 21, 0.959);
+  width: 10rem;
+}
