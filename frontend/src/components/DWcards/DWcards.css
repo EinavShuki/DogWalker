@@ -1,5 +1,9 @@
 .cards_container {
   display: grid;
-  background-color: rgba(245, 121, 21, 0.959);
-  width: 10rem;
+  background-color: rgba(236, 142, 66, 0.205);
+  width: 90%;
+  position: relative;
+  top: 3rem;
+  text-overflow: hidden;
+  scroll-behavior: smooth;
 }

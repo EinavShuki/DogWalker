@@ -12,6 +12,7 @@ import { StorageProvider } from "./contexts/StorageContext";
 import { DbProvider } from "./contexts/DbContext";
 import HomeScreen from "./screens/HomeScreen";
 import UpdateUserDetails from "./screens/UpdateUserDetails";
+import DogWalkerSearchScreen from "./screens/DogWalkerSearchScreen";
 
 function App() {
   return (
@@ -21,11 +22,16 @@ function App() {
         <main>
           <Switch>
             <Route path="/" component={HomeScreen} exact />
-            <Route path="/dogWalker" component={DogWalkerScreen} exact />
+            <Route path="/dogWalker" component={DogWalkerScreen} />
+
             <Route path="/login" component={LoginScreen} />
             <Route path="/forget-password" component={ForgetPasswordScreen} />
             <StorageProvider>
               <DbProvider>
+                <Route
+                  path="/searchingdogWalker"
+                  component={DogWalkerSearchScreen}
+                />
                 <PrivateRoute path="/profile" component={ProfileScreen} />
                 <PrivateRoute
                   path="/user-details"

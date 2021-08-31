@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import React from "react";
 import dogpic from "../img/dog.png";
+import DWcards from "../components/DWcards/DWcards";
 
 const HomeScreen = () => {
   const history = useHistory();
@@ -8,7 +9,7 @@ const HomeScreen = () => {
     history.push("/dogWalker");
   };
   const dogWalkerSeeker = () => {
-    history.push("/");
+    history.push("/searchingdogWalker");
   };
   return (
     <div className="container">

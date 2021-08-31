@@ -88,7 +88,7 @@ const UserPage = () => {
       let tmpPhone = userData.phone;
 
       if (tmpPhone[0] !== "+") {
-        if (tmpPhone[0] == 0) tmpPhone = Number(tmpPhone);
+        if (tmpPhone[0] === 0) tmpPhone = Number(tmpPhone);
         setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
       }
     } catch (error) {

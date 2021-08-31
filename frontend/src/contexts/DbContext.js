@@ -9,7 +9,6 @@ export const useDb = () => {
 };
 
 export const DbProvider = ({ children }) => {
-  //creating "one" doc
   const uploadToDb = (
     email,
     userName,
@@ -33,14 +32,18 @@ export const DbProvider = ({ children }) => {
     });
   };
 
-  //get data from doc
+  //get data from doc about specific user
   const getFromDb = (email) => {
     var dbRef = db.collection("users").doc(email);
-
     return dbRef.get();
   };
 
-  const value = { uploadToDb, getFromDb };
+  const getAllUsersFromDb = () => {
+    var dbRef = db.collection("users");
+    return dbRef.get();
+  };
+
+  const value = { uploadToDb, getFromDb, getAllUsersFromDb };
 
   return <DbContext.Provider value={value}>{children}</DbContext.Provider>;
 };
