@@ -2,6 +2,8 @@
   border-radius: 6px;
   border: 1px solid rgba(242, 133, 0, 0.397);
   padding: 2rem 1rem;
+  position: relative;
+  top: 7rem;
 }
 .sign_up_tit {
   text-align: center;

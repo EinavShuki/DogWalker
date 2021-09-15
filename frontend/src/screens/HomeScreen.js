@@ -1,7 +1,6 @@
 import { useHistory } from "react-router-dom";
 import React from "react";
 import dogpic from "../img/dog.png";
-import DWcards from "../components/DWcards/DWcards";
 
 const HomeScreen = () => {
   const history = useHistory();

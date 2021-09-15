@@ -42,10 +42,9 @@ export const AuthProvider = ({ children }) => {
     return currentuser.updatePassword(password);
   };
 
-  const updateProfile = (userName, photo) => {
+  const updateProfile = (userName) => {
     return currentuser.updateProfile({
       displayName: userName,
-      photoUrl: photo,
     });
   };
 

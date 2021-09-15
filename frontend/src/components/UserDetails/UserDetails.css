@@ -115,6 +115,10 @@
   margin: auto;
 }
 
+.update_user_details_div small {
+  margin-left: 40px;
+}
+
 @media screen and (max-width: 800px) {
   .user_img {
     width: 100px;

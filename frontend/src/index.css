@@ -232,6 +232,13 @@ textarea {
   min-height: 80vh;
 }
 
+/*signup screen*/
+.signup_screen_div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
 /* login screen */
 .login_screen_div {
   position: relative;

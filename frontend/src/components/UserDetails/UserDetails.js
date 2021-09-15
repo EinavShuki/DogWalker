@@ -25,6 +25,8 @@ const UserDetails = () => {
   const [lan, setLan] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [countryValid, setCountryValid] = useState("");
+  const [cityValid, setCityValid] = useState("");
 
   // const [crop, setCrop] = useState({ x: 0, y: 0 });
   // const [zoom, setZoom] = useState(1);
@@ -51,8 +53,11 @@ const UserDetails = () => {
       if (coords.longitude > 0) setLan("+" + coords.longitude);
       else setLan("-" + coords.longitude);
     });
+    checkCountryValidation(null);
+    checkCityValidation(null);
   };
 
+  //after locate User and ypdate lan&lat I determine his/her city and country
   useEffect(() => {
     if (lan !== "") {
       const options = {
@@ -78,6 +83,7 @@ const UserDetails = () => {
     }
   }, [lan]);
 
+  //user start to type country on his/her own
   const countrySearch = async () => {
     setCountries([]);
     const options = {
@@ -101,6 +107,7 @@ const UserDetails = () => {
     }
   };
 
+  // user start to type city  on his/her own
   const citySearch = async () => {
     setCities([]);
     if (cityRef.current.value.length > 2) {
@@ -121,6 +128,7 @@ const UserDetails = () => {
 
       try {
         const { data } = await axios(options);
+
         setCities(data.data);
       } catch (error) {
         console.error(error);
@@ -132,8 +140,8 @@ const UserDetails = () => {
     e.preventDefault();
     const promises = [];
 
-    //update name and image to current user
-    promises.push(updateProfile(nameRef.current.value, ImgUrl));
+    //update name
+    promises.push(updateProfile(nameRef.current.value));
     //update to db all user's details
     promises.push(
       uploadToDb(
@@ -145,6 +153,8 @@ const UserDetails = () => {
         allowWhatsapp,
         countryRef.current.value,
         cityRef.current.value,
+        lan,
+        lat,
         aboutRef.current.value
       )
     );
@@ -200,6 +210,7 @@ const UserDetails = () => {
       try {
         const res = await getFromDb(currentuser.email);
         if (res.data()) {
+          // console.log(res.data());
           nameRef.current.value = res.data().userName;
           setGender(res.data().gender);
           ageRef.current.value = res.data().age;
@@ -220,6 +231,29 @@ const UserDetails = () => {
   //   console.log(croppedArea, croppedAreaPixels);
   // }, []);
 
+  const checkCountryValidation = (e) => {
+    if (!e || e.key === "Unidentified") {
+      countries.forEach((country) => {
+        if (country.name === countryRef.current.value) {
+          setCountryValid("");
+        }
+      });
+    } else {
+      setCountryValid("Country is not valid-Please pick from the list");
+    }
+  };
+
+  const checkCityValidation = (e) => {
+    if (!e || e.key === "Unidentified") {
+      cities.forEach((city) => {
+        if (city.name === cityRef.current.value) {
+          setCityValid("");
+        }
+      });
+    } else {
+      setCityValid("City is not valid-Please pick from the list");
+    }
+  };
   return (
     <div className="update_user_details_div">
       <form onSubmit={submitHandler} className="profile_form">
@@ -295,13 +329,16 @@ const UserDetails = () => {
             ref={countryRef}
             type="text"
             onChange={countrySearch}
+            onKeyDown={(e) => checkCountryValidation(e)}
           ></input>
+
           <datalist required={true} id="countries_list">
             {countries.map((country) => {
               return <option key={country.code}>{country.name}</option>;
             })}
           </datalist>
         </span>
+        <small>{countryValid}</small>
         <span>
           <label>
             <h3>*</h3>City
@@ -314,6 +351,7 @@ const UserDetails = () => {
             ref={cityRef}
             type="text"
             onChange={citySearch}
+            onKeyDown={(e) => checkCityValidation(e)}
           />
           <datalist required={true} id="cities_list">
             {cities.map((city) => {
@@ -321,6 +359,7 @@ const UserDetails = () => {
             })}
           </datalist>
         </span>
+        <small>{cityValid}</small>
         <span>
           <label htmlFor="phone">Phone</label>
           <input id="phone" autoComplete="on" ref={phoneRef} type="tel" />

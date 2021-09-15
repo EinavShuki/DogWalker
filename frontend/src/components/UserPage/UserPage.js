@@ -35,6 +35,7 @@ const UserPage = () => {
     const getDetails = async () => {
       try {
         const res = await getFromDb(currentuser.email);
+
         if (res.data()) {
           setUserData(res.data());
         }
@@ -107,7 +108,11 @@ const UserPage = () => {
         {showPopUp && <PopUp />}
       </div>
       <div className="img_profile_page">
-        {loading ? <Loader /> : <img className="user_img" src={ImgUrl} />}
+        {loading ? (
+          <Loader />
+        ) : (
+          <img className="user_img" src={ImgUrl} atl="user" />
+        )}
       </div>
       <div className="user_details">
         <h3>

@@ -4,11 +4,10 @@ import SignUp from "../components/SignUp/SignUp";
 import talking_dog from "../img/talking_dog.png";
 
 const DogWalkerScreen = () => {
-  const [signUp, setSignUp] = useState(false);
   const history = useHistory();
 
   const signUpHandler = () => {
-    setSignUp(true);
+    history.push("/signup");
   };
   const loginHandler = () => {
     history.push("/login");
@@ -25,14 +24,11 @@ const DogWalkerScreen = () => {
           </h3>
         </div>
       </div>
-      {signUp ? (
-        <SignUp />
-      ) : (
-        <div className="sign_in_div">
-          <button onClick={loginHandler}>Log in</button>
-          <button onClick={signUpHandler}>Sign up</button>
-        </div>
-      )}
+
+      <div className="sign_in_div">
+        <button onClick={loginHandler}>Log in</button>
+        <button onClick={signUpHandler}>Sign up</button>
+      </div>
     </div>
   );
 };

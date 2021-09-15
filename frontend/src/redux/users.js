@@ -49,7 +49,7 @@ export const fetchCurrentUser = (email) => async (dispatch) => {
   // const { getFromDb } = useDb();
   dispatch(userLoading());
   try {
-    console.log(email);
+    // console.log(email);
     // WILL BE API CALL
     // const res = await getFromDb(email);
     // console.log(res.data());

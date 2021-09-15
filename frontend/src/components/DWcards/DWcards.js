@@ -11,21 +11,23 @@ import axios from "axios";
 
 const DWcards = () => {
   const [usersList, setUsersList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [ImgUrl, setImgUrl] = useState("");
+  const [loading, setLoading] = useState(true);
   const [phoneWithCallingCode, setPhoneWithCallingCode] = useState(0);
+  const [usersPictures, setUsersPictures] = useState([]);
 
   const { getAllUsersFromDb } = useDb();
   const { getFromStorage } = useStorage();
 
   useEffect(() => {
     setUsersList([]);
+    setUsersPictures([]);
     const getUsers = async () => {
       try {
         const res = await getAllUsersFromDb();
         res.forEach((doc) => {
           let tempDoc = doc.data();
           tempDoc.email = doc.id;
+          getImgs(tempDoc.email);
           setUsersList((prev) => [...prev, tempDoc]);
         });
       } catch (err) {
@@ -36,33 +38,31 @@ const DWcards = () => {
     getUsers();
   }, []);
 
-  const callingCodeSearch = (phone) => {
-    axios
-      .get("https://restcountries.eu/rest/v2/name/Israel")
-      .then(({ data }) => {
-        let tmpPhone = phone;
-        if (tmpPhone[0] !== "+") {
-          if (tmpPhone[0] == 0) tmpPhone = Number(tmpPhone);
-
-          setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
-        }
+  const getImgs = (email) => {
+    setLoading(true);
+    getFromStorage(email)
+      .then((res) => {
+        setUsersPictures((prev) => [...prev, res]);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const getImgs = (email) => {
-    console.log("boom", email);
-    // setLoading(true);
-    getFromStorage(email)
-      .then((res) => {
-        console.log(res);
-        setLoading(false);
-        setImgUrl(res);
+  const callingCodeSearch = (phone) => {
+    axios
+      .get("https://restcountries.eu/rest/v2/name/Israel")
+      .then(({ data }) => {
+        let tmpPhone = phone;
+        if (tmpPhone[0] !== "+") {
+          if (tmpPhone[0] === 0) tmpPhone = Number(tmpPhone);
+
+          setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
+        }
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -82,16 +82,19 @@ const DWcards = () => {
   return (
     <div className="cards_container">
       <div className="cards">
-        {usersList.map((userData) => {
+        {usersList.map((userData, index) => {
           return (
             <div key={userData.email} className="profie_div single_card">
-              <div className="img_profile_page">
+              <div className="img_profile_page img_search_page">
                 {loading ? (
                   <Loader />
                 ) : (
                   <>
-                    {/* {getImgs(userData.email)} */}
-                    <img className="user_img" src="" alt="user picture" />
+                    <img
+                      className="user_img"
+                      src={usersPictures[index]}
+                      alt="user"
+                    />
                   </>
                 )}
               </div>

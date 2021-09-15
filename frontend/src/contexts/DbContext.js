@@ -18,6 +18,8 @@ export const DbProvider = ({ children }) => {
     allowWhatsapp,
     country,
     city,
+    lan,
+    lat,
     about
   ) => {
     return db.collection("users").doc(email).set({
@@ -28,6 +30,8 @@ export const DbProvider = ({ children }) => {
       allowWhatsapp,
       country,
       city,
+      lan,
+      lat,
       about,
     });
   };

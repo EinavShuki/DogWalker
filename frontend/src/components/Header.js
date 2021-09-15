@@ -7,6 +7,8 @@ const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
+  const [loginOrSignUp, setLoginOrSignUp] = useState("Log In");
+  const [currentPage, setCurrentPage] = useState("");
   const { currentuser, logout } = useAuth();
   const history = useHistory();
 
@@ -23,6 +25,15 @@ const Header = () => {
       setError("Log out Failed");
     }
   };
+
+  useEffect(() => {
+    setCurrentPage(window.location.href.split("/").splice(-1)[0]);
+  }, []);
+
+  useEffect(() => {
+    if (currentPage === "login") setLoginOrSignUp("Sign Up");
+    else setLoginOrSignUp("Log In");
+  }, [currentPage]);
   return (
     <div id="header_nav">
       <Link className="header_link" to="/">
@@ -52,8 +63,11 @@ const Header = () => {
           |<h3 onClick={logoutHandler}> Log Out</h3>
         </div>
       ) : (
-        <Link className="header_link" to="/login">
-          Log In
+        <Link
+          className="header_link"
+          to={currentPage === "login" ? "/signup" : "/login"}
+        >
+          {loginOrSignUp}
         </Link>
       )}
       {error}

@@ -13,6 +13,7 @@ import { DbProvider } from "./contexts/DbContext";
 import HomeScreen from "./screens/HomeScreen";
 import UpdateUserDetails from "./screens/UpdateUserDetails";
 import DogWalkerSearchScreen from "./screens/DogWalkerSearchScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/dogWalker" component={DogWalkerScreen} />
 
             <Route path="/login" component={LoginScreen} />
+            <Route path="/signup" component={SignUpScreen} />
             <Route path="/forget-password" component={ForgetPasswordScreen} />
             <StorageProvider>
               <DbProvider>

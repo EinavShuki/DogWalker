@@ -7,3 +7,10 @@
   text-overflow: hidden;
   scroll-behavior: smooth;
 }
+.cards {
+  display: grid;
+  justify-content: center;
+}
+.img_search_page {
+  margin-top: 0;
+}
