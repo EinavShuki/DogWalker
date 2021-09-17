@@ -5,13 +5,8 @@ import { useStorage } from "../../contexts/StorageContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDb } from "../../contexts/DbContext";
 import { useHistory } from "react-router";
-import bone from "../../img/bone.png";
+import bone2 from "../../img/bone2.png";
 import Loader from "../Loader/Loader";
-
-// import Cropper from "react-easy-crop";
-
-// import { useDispatch, useSelector } from "react-redux";
-// import { UpdateUser, fetchCurrentUser } from "../../redux/users";
 
 const UserDetails = () => {
   const [cities, setCities] = useState([]);
@@ -27,9 +22,6 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(false);
   const [countryValid, setCountryValid] = useState("");
   const [cityValid, setCityValid] = useState("");
-
-  // const [crop, setCrop] = useState({ x: 0, y: 0 });
-  // const [zoom, setZoom] = useState(1);
 
   const history = useHistory();
 
@@ -175,7 +167,6 @@ const UserDetails = () => {
 
   const uploadHandler = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     try {
       await uploadToStorage(selectedImg, currentuser.email);
@@ -191,14 +182,10 @@ const UserDetails = () => {
     const getImg = async () => {
       try {
         const res = await getFromStorage(currentuser.email);
+        console.log(res);
         setImgUrl(res);
-
-        if (ImgUrl !== "") {
-          setTimeout(() => {
-            setLoading(false);
-          }, 1000);
-        }
       } catch (error) {
+        setImgUrl("");
         console.error(error);
       }
     };
@@ -258,11 +245,10 @@ const UserDetails = () => {
     <div className="update_user_details_div">
       <form onSubmit={submitHandler} className="profile_form">
         <div className="img_profile">
-          {!loading && ImgUrl !== "" ? (
+          {!loading ? (
             <img
               className="user_img"
-              src={ImgUrl}
-              alt={bone}
+              src={ImgUrl === "" ? bone2 : ImgUrl}
               draggable="false"
             />
           ) : (
