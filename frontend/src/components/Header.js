@@ -27,13 +27,17 @@ const Header = () => {
   };
 
   useEffect(() => {
-    setCurrentPage(window.location.href.split("/").splice(-1)[0]);
-  }, []);
-
-  useEffect(() => {
-    if (currentPage === "login") setLoginOrSignUp("Sign Up");
+    if (currentPage === "/login") setLoginOrSignUp("Sign Up");
     else setLoginOrSignUp("Log In");
   }, [currentPage]);
+
+  //changing header with url change
+  useEffect(() => {
+    history.listen((location) => {
+      setCurrentPage(location.pathname);
+    });
+  }, [history]);
+
   return (
     <div id="header_nav">
       <Link className="header_link" to="/">
@@ -65,7 +69,7 @@ const Header = () => {
       ) : (
         <Link
           className="header_link"
-          to={currentPage === "login" ? "/signup" : "/login"}
+          to={currentPage === "/login" ? "/signup" : "/login"}
         >
           {loginOrSignUp}
         </Link>

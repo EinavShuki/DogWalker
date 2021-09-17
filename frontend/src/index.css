@@ -228,8 +228,9 @@ textarea {
 /*DogWalkerSearch screen*/
 .dw_screen_container {
   display: flex;
-  justify-content: center;
   min-height: 80vh;
+  flex-direction: column;
+  align-items: center;
 }
 
 /*signup screen*/
@@ -294,7 +295,6 @@ textarea {
     width: 15rem;
   }
   .login_screen_div {
-    top: 7rem;
     right: 0;
     display: grid;
   }

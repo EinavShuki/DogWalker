@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./DWcards.css";
+import { useHistory } from "react-router-dom";
 
 import { useDb } from "../../contexts/DbContext";
 import { useStorage } from "../../contexts/StorageContext";
@@ -9,14 +10,17 @@ import { ImWhatsapp } from "react-icons/im";
 import { SiGmail } from "react-icons/si";
 import axios from "axios";
 
-const DWcards = () => {
+const DWcards = ({ location }) => {
   const [usersList, setUsersList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [phoneWithCallingCode, setPhoneWithCallingCode] = useState(0);
-  const [usersPictures, setUsersPictures] = useState([]);
+
+  const [usersPictures, setUsersPictures] = useState({});
 
   const { getAllUsersFromDb } = useDb();
   const { getFromStorage } = useStorage();
+
+  const history = useHistory();
 
   useEffect(() => {
     setUsersList([]);
@@ -27,8 +31,31 @@ const DWcards = () => {
         res.forEach((doc) => {
           let tempDoc = doc.data();
           tempDoc.email = doc.id;
-          getImgs(tempDoc.email);
-          setUsersList((prev) => [...prev, tempDoc]);
+          if (location.country) {
+            if (tempDoc.country === location.country) {
+              if (location.city) {
+                if (tempDoc.city === location.city) {
+                  setUsersList((prev) => [...prev, tempDoc]);
+                  getImgs(tempDoc.email);
+                } else {
+                  //no cities were found (showing cities near by)
+                  console.log("no cities");
+                }
+              } else {
+                setUsersList((prev) => [...prev, tempDoc]);
+
+                getImgs(tempDoc.email);
+              }
+            } else {
+              //no country were found
+              console.log("no countries");
+            }
+          }
+          //location.country===""
+          else {
+            setUsersList((prev) => [...prev, tempDoc]);
+            getImgs(tempDoc.email);
+          }
         });
       } catch (err) {
         console.error(err);
@@ -38,33 +65,38 @@ const DWcards = () => {
     getUsers();
   }, []);
 
-  const getImgs = (email) => {
+  const getImgs = async (email) => {
     setLoading(true);
-    getFromStorage(email)
-      .then((res) => {
-        setUsersPictures((prev) => [...prev, res]);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const res = await getFromStorage(email);
+      setUsersPictures((prev) => ({ ...prev, [email]: res }));
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const callingCodeSearch = (phone) => {
+  const callingCodeSearch = (phone, country) => {
     axios
-      .get("https://restcountries.eu/rest/v2/name/Israel")
+      .get(`https://restcountries.eu/rest/v2/name/${country}`)
       .then(({ data }) => {
         let tmpPhone = phone;
         if (tmpPhone[0] !== "+") {
           if (tmpPhone[0] === 0) tmpPhone = Number(tmpPhone);
-
+          console.log(data[0].callingCodes[0] + tmpPhone);
           setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
         }
       })
+
       .catch((error) => {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    if (phoneWithCallingCode > 0)
+      window.location.href = `https://wa.me/+${phoneWithCallingCode}?text=Hello, I saw your ad on the DogWalker site. Are you available to speak??`;
+  }, [phoneWithCallingCode]);
 
   const genderAddressing = (gender) => {
     switch (gender) {
@@ -92,7 +124,7 @@ const DWcards = () => {
                   <>
                     <img
                       className="user_img"
-                      src={usersPictures[index]}
+                      src={usersPictures[`${userData.email}`]}
                       alt="user"
                     />
                   </>
@@ -115,9 +147,11 @@ const DWcards = () => {
                     </a>{" "}
                     {userData.allowWhatsapp && (
                       <>
-                        {callingCodeSearch(userData.phone)}
                         <a
-                          href={`https://wa.me/+${phoneWithCallingCode}?text=Hello, I saw your ad on the DogWalker site. Are you available to speak??`}
+                          onClick={() =>
+                            callingCodeSearch(userData.phone, userData.country)
+                          }
+                          // href={`https://wa.me/+${phoneWithCallingCode}?text=Hello, I saw your ad on the DogWalker site. Are you available to speak??`}
                         >
                           <ImWhatsapp className="whatsapp_icon" />
                         </a>
