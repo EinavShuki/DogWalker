@@ -14,3 +14,8 @@
 .img_search_page {
   margin-top: 0;
 }
+.message_dwcards {
+  margin: auto;
+  font-family: "Alice", serif;
+  font-size: 1.2rem;
+}

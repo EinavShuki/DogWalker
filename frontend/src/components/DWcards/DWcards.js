@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./DWcards.css";
-import { useHistory } from "react-router-dom";
 
 import { useDb } from "../../contexts/DbContext";
 import { useStorage } from "../../contexts/StorageContext";
@@ -13,14 +12,14 @@ import axios from "axios";
 const DWcards = ({ location }) => {
   const [usersList, setUsersList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [foundCity, setFoundCity] = useState(false);
   const [phoneWithCallingCode, setPhoneWithCallingCode] = useState(0);
+  const [message, setMessage] = useState("");
 
   const [usersPictures, setUsersPictures] = useState({});
 
   const { getAllUsersFromDb } = useDb();
   const { getFromStorage } = useStorage();
-
-  const history = useHistory();
 
   useEffect(() => {
     setUsersList([]);
@@ -35,20 +34,14 @@ const DWcards = ({ location }) => {
             if (tempDoc.country === location.country) {
               if (location.city) {
                 if (tempDoc.city === location.city) {
+                  setFoundCity(true);
                   setUsersList((prev) => [...prev, tempDoc]);
                   getImgs(tempDoc.email);
-                } else {
-                  //no cities were found (showing cities near by)
-                  console.log("no cities");
                 }
               } else {
                 setUsersList((prev) => [...prev, tempDoc]);
-
                 getImgs(tempDoc.email);
               }
-            } else {
-              //no country were found
-              console.log("no countries");
             }
           }
           //location.country===""
@@ -63,7 +56,22 @@ const DWcards = ({ location }) => {
     };
 
     getUsers();
+    if (!foundCity && location.city) {
+      //there is no dw from this city
+      setMessage("Cannot find a Dog Walker from this city");
+      setMessage("");
+    }
   }, []);
+
+  useEffect(() => {
+    if (!foundCity && location.city) {
+      //there is no dw from this country
+      setMessage("Cannot find a Dog Walker from this city");
+    } else if (usersList.length === 0)
+      //there is no dw from this city
+      setMessage("Cannot find a Dog Walker from this country");
+    else setMessage("");
+  }, [usersList]);
 
   const getImgs = async (email) => {
     setLoading(true);
@@ -113,6 +121,7 @@ const DWcards = ({ location }) => {
 
   return (
     <div className="cards_container">
+      <div className="message_dwcards">{message}</div>
       <div className="cards">
         {usersList.map((userData, index) => {
           return (
