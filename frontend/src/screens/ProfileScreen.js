@@ -23,7 +23,7 @@ const ProfileScreen = () => {
       }
     };
     getDetails();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <div className="profile_screen_div">{userExists && <UserPage />}</div>;
 };

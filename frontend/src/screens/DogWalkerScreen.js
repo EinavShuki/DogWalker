@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import SignUp from "../components/SignUp/SignUp";
 import talking_dog from "../img/talking_dog.png";
 
 const DogWalkerScreen = () => {

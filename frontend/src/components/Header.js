@@ -13,9 +13,11 @@ const Header = () => {
   const history = useHistory();
 
   useEffect(() => {
+    console.log(currentuser);
     if (currentuser) setIsLogin(true);
     else setIsLogin(false);
   }, [currentuser]);
+
   const logoutHandler = async () => {
     try {
       setError("");

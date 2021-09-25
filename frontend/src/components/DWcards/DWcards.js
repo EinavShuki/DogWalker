@@ -61,7 +61,7 @@ const DWcards = ({ location }) => {
       setMessage("Cannot find a Dog Walker from this city");
       setMessage("");
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!foundCity && location.city) {
@@ -71,7 +71,7 @@ const DWcards = ({ location }) => {
       //there is no dw from this city
       setMessage("Cannot find a Dog Walker from this country");
     else setMessage("");
-  }, [usersList]);
+  }, [usersList]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getImgs = async (email) => {
     setLoading(true);
@@ -160,7 +160,7 @@ const DWcards = ({ location }) => {
                           onClick={() =>
                             callingCodeSearch(userData.phone, userData.country)
                           }
-                          // href={`https://wa.me/+${phoneWithCallingCode}?text=Hello, I saw your ad on the DogWalker site. Are you available to speak??`}
+                          // href="#"
                         >
                           <ImWhatsapp className="whatsapp_icon" />
                         </a>

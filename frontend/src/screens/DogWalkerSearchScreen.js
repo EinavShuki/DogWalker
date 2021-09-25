@@ -1,5 +1,4 @@
 import React from "react";
-import DWcards from "../components/DWcards/DWcards";
 import SearchField from "../components/SerachField/SearchField";
 
 const DogWalkerSearch = () => {
