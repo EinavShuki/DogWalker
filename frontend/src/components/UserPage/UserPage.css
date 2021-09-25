@@ -78,7 +78,7 @@
 @media screen and (max-width: 800px) {
   .profie_div {
     width: 75vw;
-    margin: 0 auto 15rem auto;
+    margin-bottom: 3rem;
   }
   .user_details ul {
     font-size: larger;

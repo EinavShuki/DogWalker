@@ -111,6 +111,9 @@
   border: 2px solid black;
   background-color: rgba(0, 144, 0, 0.705);
 }
+.profile_form button:hover {
+  background-color: rgba(33, 179, 33, 0.705);
+}
 #submit_user_details {
   margin: auto;
 }

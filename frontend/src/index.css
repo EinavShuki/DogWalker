@@ -10,6 +10,10 @@ body {
   color: black;
 }
 
+main {
+  min-height: 80vh;
+}
+
 h1 {
   font-size: 3rem;
   margin: 1rem 0;
@@ -85,9 +89,9 @@ textarea {
 /*Footer*/
 #footer {
   display: flex;
-  position: relative;
+  /* position: relative;
   bottom: 0;
-  margin: 0;
+  margin: 0; */
   width: 100%;
   justify-content: center;
 }
@@ -224,6 +228,13 @@ textarea {
   background-color: rgba(245, 121, 21, 0.959);
   padding: 1rem 1rem;
 }
+.user_type_div button:hover {
+  background-color: rgba(243, 140, 56, 0.959);
+}
+
+.sign_in_div button:hover {
+  background-color: rgba(34, 140, 226, 0.712);
+}
 
 /*DogWalkerSearch screen*/
 .dw_screen_container {
@@ -286,9 +297,12 @@ textarea {
   top: 10rem;
 }
 @media (max-width: 1150px) {
+  #footer {
+    top: 5rem;
+  }
   .talking_dog > h3 {
     height: 11rem;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     top: -4rem;
   }
   .talking_dog img {

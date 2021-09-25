@@ -27,6 +27,7 @@ const SignUp = () => {
         setError(err.message);
       }
     }
+
     setLoading(false);
   };
 

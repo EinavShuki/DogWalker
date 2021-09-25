@@ -56,13 +56,11 @@ const UserPage = () => {
     getDetails();
     getImg();
     if (userData.allowWhatsapp) callingCodeSearch();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (ImgUrl !== "") {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     }
   }, [ImgUrl]);
   const QMarkHoverHandler = () => {

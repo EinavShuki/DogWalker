@@ -1,4 +1,4 @@
-// import Footer from "./components/Footer";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import DogWalkerScreen from "./screens/DogWalkerScreen";
@@ -44,7 +44,7 @@ function App() {
             </StorageProvider>
           </Switch>
         </main>
-        {/* <Footer /> */}
+        <Footer />
       </AuthProvider>
     </Router>
   );

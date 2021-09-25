@@ -32,6 +32,7 @@ const Login = () => {
       ) {
         setError("Wrong password");
       } else setError(err.message);
+
       setLoading(false);
     }
   };

@@ -4,8 +4,8 @@
   width: 90%;
   position: relative;
   top: 3rem;
-  text-overflow: hidden;
   scroll-behavior: smooth;
+  padding-bottom: 6rem;
 }
 .cards {
   display: grid;
@@ -18,4 +18,10 @@
   margin: auto;
   font-family: "Alice", serif;
   font-size: 1.2rem;
+}
+
+@media screen and (max-width: 800px) {
+  .cards_container {
+    width: 100%;
+  }
 }

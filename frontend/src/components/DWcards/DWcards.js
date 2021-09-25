@@ -77,7 +77,9 @@ const DWcards = ({ location }) => {
     setLoading(true);
     try {
       const res = await getFromStorage(email);
+
       setUsersPictures((prev) => ({ ...prev, [email]: res }));
+
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -120,68 +122,75 @@ const DWcards = ({ location }) => {
   };
 
   return (
-    <div className="cards_container">
+    <>
       <div className="message_dwcards">{message}</div>
-      <div className="cards">
-        {usersList.map((userData, index) => {
-          return (
-            <div key={userData.email} className="profie_div single_card">
-              <div className="img_profile_page img_search_page">
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <img
-                      className="user_img"
-                      src={usersPictures[`${userData.email}`]}
-                      alt="user"
-                    />
-                  </>
-                )}
-              </div>
-              <div className="user_details">
-                <h3>
-                  {userData.userName} is {userData.age} years old , from{" "}
-                  {userData.city}, {userData.country}. And that is what{" "}
-                  {genderAddressing(userData.gender)} to say:
-                  <span className="parenthesis">"{userData.about}"</span>
-                </h3>
-                <h3>Contact info:</h3>
-                <br></br>
-                <ul>
-                  <li>
-                    <a href={`tel:${userData.phone}`}>
-                      {" "}
-                      <FcPhone />
-                    </a>{" "}
-                    {userData.allowWhatsapp && (
+      {message === "" && (
+        <div className="cards_container">
+          <div className="cards">
+            {usersList.map((userData, index) => {
+              return (
+                <div key={userData.email} className="profie_div single_card">
+                  <div className="img_profile_page img_search_page">
+                    {loading ? (
+                      <Loader />
+                    ) : (
                       <>
-                        <a
-                          onClick={() =>
-                            callingCodeSearch(userData.phone, userData.country)
-                          }
-                          // href="#"
-                        >
-                          <ImWhatsapp className="whatsapp_icon" />
-                        </a>
+                        <img
+                          className="user_img"
+                          src={usersPictures[`${userData.email}`]}
+                          alt="user"
+                        />
                       </>
                     )}
-                    <span> {userData.phone}</span>
-                  </li>
-                  <li>
-                    <a href={`mailto:${userData.email}`}>
-                      {" "}
-                      <SiGmail />
-                    </a>
-                    <span> {userData.email}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+                  </div>
+                  <div className="user_details">
+                    <h3>
+                      {userData.userName} is {userData.age} years old , from{" "}
+                      {userData.city}, {userData.country}. And that is what{" "}
+                      {genderAddressing(userData.gender)} to say:
+                      <span className="parenthesis">"{userData.about}"</span>
+                    </h3>
+                    <h3>Contact info:</h3>
+                    <br></br>
+                    <ul>
+                      <li>
+                        <a href={`tel:${userData.phone}`}>
+                          {" "}
+                          <FcPhone />
+                        </a>{" "}
+                        {userData.allowWhatsapp && (
+                          <>
+                            <a
+                              onClick={() =>
+                                callingCodeSearch(
+                                  userData.phone,
+                                  userData.country
+                                )
+                              }
+                              // href="#"
+                            >
+                              <ImWhatsapp className="whatsapp_icon" />
+                            </a>
+                          </>
+                        )}
+                        <span> {userData.phone}</span>
+                      </li>
+                      <li>
+                        <a href={`mailto:${userData.email}`}>
+                          {" "}
+                          <SiGmail />
+                        </a>
+                        <span> {userData.email}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
