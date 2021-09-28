@@ -182,11 +182,9 @@ const UserDetails = () => {
     const getImg = async () => {
       try {
         const res = await getFromStorage(currentuser.email);
-        console.log(res);
         setImgUrl(res);
       } catch (error) {
         setImgUrl("");
-        console.error(error);
       }
     };
     getImg();
@@ -211,6 +209,7 @@ const UserDetails = () => {
         console.error(error);
       }
     };
+
     getDetails();
   }, []);
 
@@ -262,18 +261,7 @@ const UserDetails = () => {
             Upload
           </button>{" "}
         </div>
-        {/* {ImgUrl !== "" && (
-          <Cropper
-            image={ImgUrl}
-            crop={crop}
-            zoom={zoom}
-            aspect={3 / 3}
-            cropShape={"round"}
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={setZoom}
-          />
-        )} */}
+
         <span>
           <label>
             <h3>*</h3>Name

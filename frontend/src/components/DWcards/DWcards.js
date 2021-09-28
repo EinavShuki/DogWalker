@@ -7,6 +7,7 @@ import Loader from "../Loader/Loader";
 import { FcPhone } from "react-icons/fc";
 import { ImWhatsapp } from "react-icons/im";
 import { SiGmail } from "react-icons/si";
+import bone2 from "../../img/bone2.png";
 import axios from "axios";
 
 const DWcards = ({ location }) => {
@@ -82,25 +83,54 @@ const DWcards = ({ location }) => {
 
       setLoading(false);
     } catch (error) {
+      setUsersPictures((prev) => ({ ...prev, [email]: "" }));
+    }
+  };
+
+  const callingCodeSearch = async (phone, country) => {
+    country = country.toLowerCase();
+    // const api_key = process.env.REACT_APP_COUNTRYLAYER_API_KEY;
+    const options = {
+      method: "GET",
+      url: `https://restcountries.com/v2/name/${country}`,
+
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    try {
+      const { data } = await axios(options);
+      let tmpPhone = phone;
+      if (tmpPhone[0] !== "+") {
+        if (tmpPhone[0] === 0) tmpPhone = Number(tmpPhone);
+        setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
+      } else {
+        checkCallingNum(tmpPhone);
+      }
+    } catch (error) {
       console.error(error);
     }
   };
 
-  const callingCodeSearch = (phone, country) => {
-    axios
-      .get(`https://restcountries.eu/rest/v2/name/${country}`)
-      .then(({ data }) => {
-        let tmpPhone = phone;
-        if (tmpPhone[0] !== "+") {
-          if (tmpPhone[0] === 0) tmpPhone = Number(tmpPhone);
-          console.log(data[0].callingCodes[0] + tmpPhone);
-          setPhoneWithCallingCode(data[0].callingCodes[0] + tmpPhone);
-        }
-      })
+  const checkCallingNum = async (num) => {
+    const tmpCallingNum = num.slice(1, 4);
+    const options = {
+      method: "GET",
+      url: `https://restcountries.com/v2/callingcode/${tmpCallingNum}`,
 
-      .catch((error) => {
-        console.error(error);
-      });
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    try {
+      const { data } = await axios(options);
+      if (!data.status) setPhoneWithCallingCode(num.slice(1));
+      else alert("There was a problem to contact this number via Whatsapp");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -137,7 +167,11 @@ const DWcards = ({ location }) => {
                       <>
                         <img
                           className="user_img"
-                          src={usersPictures[`${userData.email}`]}
+                          src={
+                            usersPictures[`${userData.email}`] === ""
+                              ? bone2
+                              : usersPictures[`${userData.email}`]
+                          }
                           alt="user"
                         />
                       </>

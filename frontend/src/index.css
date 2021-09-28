@@ -232,7 +232,8 @@ textarea {
   background-color: rgba(243, 140, 56, 0.959);
 }
 
-.sign_in_div button:hover {
+.sign_in_div button:hover,
+.sign_in_div button:active {
   background-color: rgba(34, 140, 226, 0.712);
 }
 
